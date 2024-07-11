@@ -2,7 +2,7 @@ import React, { createContext } from "react";
 import { Template } from "./template";
 import { PublicTemplateContext } from "./templateContext";
 
-interface TemplateMainContext extends Omit<PublicTemplateContext, "load"> {
+export interface TemplateMainContext extends Omit<PublicTemplateContext, "load"> {
   template: Template;
 }
 

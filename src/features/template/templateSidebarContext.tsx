@@ -3,7 +3,7 @@ import { Template } from "./template";
 
 import type { PublicTemplateContext } from "./templateContext";
 
-interface TemplateSidbarContext extends Omit<PublicTemplateContext, "load"> {
+export interface TemplateSidbarContext extends Omit<PublicTemplateContext, "load"> {
   template: Template;
 }
 
