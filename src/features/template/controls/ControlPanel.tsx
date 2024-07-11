@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useTemplate } from "../useTemplateContext";
 import { TemplateSidebarProvider } from "../templateSidebarContext";
-import SetSizeControl from "./SizeControls";
+import PropertiesControl from "./TemplatePropertiesControls";
 import ElementsControl from "./ElementsControl";
 import Tabs from "../../../common/Tabs";
 
@@ -33,7 +33,7 @@ function ControlPanel() {
         <div className="p-3 border-b-[1px] border-zinc-300 w-full">
           <Tabs tabs={tabsCurrent} onChange={onTabChange} />
         </div>
-        {activeControl === "size" && <SetSizeControl />}
+        {activeControl === "size" && <PropertiesControl />}
         {activeControl === "elements" && <ElementsControl />}
       </div>
     </TemplateSidebarProvider>
