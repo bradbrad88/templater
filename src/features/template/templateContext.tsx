@@ -18,6 +18,9 @@ export type SaveTemplatePropertiesFunction = (size: {
 export type TemplateContext = {
   saveTemplateProperties: SaveTemplatePropertiesFunction;
   addElement: (element: TemplateElement) => void;
+  changeElementFontSize: (elementId: string, fontSize: number) => void;
+  // selectedElement: TemplateElement | null;
+  // selectElement: (id: string) => void;
   load: (id: string) => void;
   unload: () => void;
   template: Template | null;
@@ -37,6 +40,8 @@ export const TemplateProvider = ({ children }: { children?: React.ReactNode }) =
   const [units, setUnits] = useState<string | null>(null);
   const [templateName, setTemplateName] = useState<string | null>(null);
   const [elements, setElements] = useState<TemplateElement[] | null>(null);
+
+  // const [selectedElement, setSelectedElement] = useState<TemplateElement | null>(null);
 
   const [newActions, setNewActions] = useState<Template["changeLog"]>([]);
 
@@ -117,6 +122,24 @@ export const TemplateProvider = ({ children }: { children?: React.ReactNode }) =
     setUnits(units);
   };
 
+  const changeElementFontSize = (elementId: string, fontChange: number) => {
+    if (!elements) throw new Error("No template found");
+    const element = elements.find(element => element.id === elementId);
+    if (!element) throw new Error("Can't find element with ID: " + elementId);
+    if (!("fontSize" in element))
+      throw new Error("Can't change font size on element of type: " + element.type);
+    const newFontSize = element.fontSize + fontChange;
+    setElements(elements =>
+      elements!.map(element => {
+        if (element.id !== elementId) return element;
+        return {
+          ...element,
+          fontSize: newFontSize,
+        };
+      })
+    );
+  };
+
   const addElement = (element: TemplateElement) => {
     setElements(prev => [...prev!, element]);
   };
@@ -124,19 +147,33 @@ export const TemplateProvider = ({ children }: { children?: React.ReactNode }) =
   const withAction =
     <T extends unknown[]>(fn: (...args: T) => void) =>
     (...args: T) => {
-      fn(...args);
-      addAction({ action: fn.name, params: args });
+      try {
+        fn(...args);
+        addAction({ action: fn.name, params: args });
+      } catch (error) {
+        console.log(error);
+      }
     };
 
   const addAction = (action: Action) => {
     setNewActions(prev => [...prev, action]);
   };
 
+  // const selectElement = (id: string) => {
+  //   if (!elements) return setSelectedElement(null);
+  //   const element = elements.find(element => element.id === id);
+  //   if (!element) return setSelectedElement(null);
+  //   setSelectedElement(element);
+  // };
+
   return (
     <Context.Provider
       value={{
         saveTemplateProperties: withAction(saveTemplateProperties),
         addElement: withAction(addElement),
+        changeElementFontSize: withAction(changeElementFontSize),
+        // selectElement,
+        // selectedElement,
         template: template,
         load,
         unload,

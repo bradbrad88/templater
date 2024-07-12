@@ -6,7 +6,7 @@ export const textElementSchema = z.object({
   id: z.string(),
   type: z.literal("text"),
   display: z.string(),
-  fontSize: z.number().gt(0),
+  fontSize: z.number(),
 });
 
 export const imageElementSchema = z.object({
