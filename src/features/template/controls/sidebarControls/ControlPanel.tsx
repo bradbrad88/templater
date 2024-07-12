@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { useTemplate } from "../useTemplateContext";
-import { TemplateSidebarProvider } from "../templateSidebarContext";
+import { useTemplate } from "../../useTemplateContext";
+import { TemplateSidebarProvider } from "../../templateSidebarContext";
 import PropertiesControl from "./TemplatePropertiesControls";
 import ElementsControl from "./ElementsControl";
-import Tabs from "../../../common/Tabs";
+import Tabs from "common/Tabs";
 import LayersControl from "./LayersControl";
 
 type ActiveControl = "size" | "elements" | "layers";

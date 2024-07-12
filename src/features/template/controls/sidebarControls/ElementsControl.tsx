@@ -1,7 +1,7 @@
 import { v4 as uuid } from "uuid";
-import Button from "../../../common/Button";
-import { TemplateElement } from "../template";
-import { useTemplateSidebar } from "../useTemplateContext";
+import Button from "common/Button";
+import { TemplateElement } from "../../template";
+import { useTemplateSidebar } from "../../useTemplateContext";
 
 function ElementsControl() {
   const { addElement } = useTemplateSidebar();

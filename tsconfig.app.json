@@ -8,6 +8,14 @@
     "module": "ESNext",
     "skipLibCheck": true,
 
+    "baseUrl": ".",
+    "paths": {
+      "ctx/*": ["./src/contexts/*"],
+      "features/*": ["./src/features/*"],
+      "common/*": ["./src/common/*"],
+      "utils/*": ["./src/utils/*"]
+    },
+
     /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,

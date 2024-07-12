@@ -2,12 +2,12 @@ import { useEffect } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useTemplateSidebar } from "../useTemplateContext";
-import { Form, FormControl, FormField, FormItem, FormLabel } from "../../../common/Form";
-import Input from "../../../common/Input";
-import Button from "../../../common/Button";
-import SelectMenu from "../../../common/SelectMenu";
-import { unitSchema } from "../template";
+import { useTemplateSidebar } from "../../useTemplateContext";
+import { Form, FormControl, FormField, FormItem, FormLabel } from "common/Form";
+import Input from "common/Input";
+import Button from "common/Button";
+import SelectMenu from "common/SelectMenu";
+import { unitSchema } from "../../template";
 
 const sizeSchema = z.object({
   templateName: z.string().min(2),
