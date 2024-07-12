@@ -1,6 +1,12 @@
 import { createContext, useCallback, useEffect, useRef, useState } from "react";
 import { z } from "zod";
-import { Action, Template, templateSchema, templateStorageKey } from "./template";
+import {
+  Action,
+  Template,
+  TemplateElement,
+  templateSchema,
+  templateStorageKey,
+} from "./template";
 
 export type SaveTemplatePropertiesFunction = (size: {
   templateName: Template["templateName"];
@@ -11,26 +17,16 @@ export type SaveTemplatePropertiesFunction = (size: {
 
 export type TemplateContext = {
   saveTemplateProperties: SaveTemplatePropertiesFunction;
+  addElement: (element: TemplateElement) => void;
   load: (id: string) => void;
   unload: () => void;
   template: Template | null;
+  error: Error | null;
 };
 
-export type TemplateElement = TextElement | ImageElement;
-
-export type PublicTemplateContext = Omit<TemplateContext, "load" | "unload">;
-
-export interface TextElement extends React.CSSProperties {
-  type: "text";
-  value: string;
-}
+export type PublicTemplateContext = Omit<TemplateContext, "load" | "unload" | "error">;
 
 export type TemplateSaveFunction = (template: Template) => void;
-
-export interface ImageElement extends React.CSSProperties {
-  type: "image";
-  src: string;
-}
 
 const Context = createContext<TemplateContext | null>(null);
 
@@ -40,17 +36,27 @@ export const TemplateProvider = ({ children }: { children?: React.ReactNode }) =
   const [width, setWidth] = useState<number | null>(null);
   const [units, setUnits] = useState<string | null>(null);
   const [templateName, setTemplateName] = useState<string | null>(null);
+  const [elements, setElements] = useState<TemplateElement[] | null>(null);
+
   const [newActions, setNewActions] = useState<Template["changeLog"]>([]);
+
   const changeLog = useRef<Template["changeLog"] | null>(null);
 
-  const { success, data } = templateSchema.safeParse({
+  const {
+    success,
+    data,
+    error: zodError,
+  } = templateSchema.safeParse({
     id,
     width,
     height,
     units,
     templateName,
+    elements,
     changeLog: [],
   });
+
+  const error = id ? zodError || null : null;
 
   const template = success ? data : null;
 
@@ -58,8 +64,6 @@ export const TemplateProvider = ({ children }: { children?: React.ReactNode }) =
     (template: Template) => {
       const validatedTemplate = templateSchema.parse(template);
       const actions = [...newActions, ...changeLog.current!];
-      console.log("New actions", [...newActions]);
-      console.log("Existing Actions", [...changeLog.current!]);
       setNewActions([]);
       changeLog.current = actions;
       validatedTemplate.changeLog = actions;
@@ -78,12 +82,21 @@ export const TemplateProvider = ({ children }: { children?: React.ReactNode }) =
     const validatedTemplates = z.record(z.string(), templateSchema).parse(templates);
     const template = validatedTemplates[templateId];
     if (!template) throw new Error(`Template with ID: '${templateId}' not found`);
-    const { height, width, id, units, templateName, changeLog: changeLogInput } = template;
+    const {
+      height,
+      width,
+      id,
+      units,
+      templateName,
+      changeLog: changeLogInput,
+      elements,
+    } = template;
     setId(id);
     setTemplateName(templateName);
     setHeight(height);
     setWidth(width);
     setUnits(units);
+    setElements(elements);
     changeLog.current = changeLogInput;
   }, []);
 
@@ -104,6 +117,10 @@ export const TemplateProvider = ({ children }: { children?: React.ReactNode }) =
     setUnits(units);
   };
 
+  const addElement = (element: TemplateElement) => {
+    setElements(prev => [...prev!, element]);
+  };
+
   const withAction =
     <T extends unknown[]>(fn: (...args: T) => void) =>
     (...args: T) => {
@@ -119,9 +136,11 @@ export const TemplateProvider = ({ children }: { children?: React.ReactNode }) =
     <Context.Provider
       value={{
         saveTemplateProperties: withAction(saveTemplateProperties),
+        addElement: withAction(addElement),
         template: template,
         load,
         unload,
+        error,
       }}
     >
       {children}

@@ -2,7 +2,7 @@ import { useParams } from "react-router";
 import { useTemplate, useTemplateMain } from "./useTemplateContext";
 import { useEffect } from "react";
 import { TemplateMainProvider } from "./templateMainContext";
-// import TemplateElement from "./TemplateElement";
+import TemplateElement from "./TemplateElement";
 
 function EditTemplatePage() {
   const { templateId } = useParams<{ templateId: string }>();
@@ -31,11 +31,11 @@ function TemplateEditor() {
           height: `${template.height}${template.units}`,
           width: `${template.width}${template.units}`,
         }}
-        className="bg-lime-300"
+        className="border-zinc-400 border-[2px]"
       >
-        {/* {template.elements.map((element, idx) => (
-            <TemplateElement key={`${idx}-${element.type}`} templateElement={element} />
-          ))} */}
+        {template.elements.map((element, idx) => (
+          <TemplateElement key={`${idx}-${element.type}`} templateElement={element} />
+        ))}
       </div>
     </div>
   );

@@ -4,12 +4,14 @@ import { TemplateSidebarProvider } from "../templateSidebarContext";
 import PropertiesControl from "./TemplatePropertiesControls";
 import ElementsControl from "./ElementsControl";
 import Tabs from "../../../common/Tabs";
+import LayersControl from "./LayersControl";
 
-type ActiveControl = "size" | "elements";
+type ActiveControl = "size" | "elements" | "layers";
 
 const tabs: Array<{ name: string; href: ActiveControl }> = [
   { name: "Template", href: "size" },
-  { name: "Elements", href: "elements" },
+  { name: "Layers", href: "layers" },
+  { name: "Create", href: "elements" },
 ];
 
 function ControlPanel() {
@@ -25,6 +27,7 @@ function ControlPanel() {
     setActiveControl(val as ActiveControl);
   };
 
+  if (templateContext.error) throw templateContext.error;
   if (!templateContext.template) return null;
 
   return (
@@ -35,6 +38,7 @@ function ControlPanel() {
         </div>
         {activeControl === "size" && <PropertiesControl />}
         {activeControl === "elements" && <ElementsControl />}
+        {activeControl === "layers" && <LayersControl />}
       </div>
     </TemplateSidebarProvider>
   );
