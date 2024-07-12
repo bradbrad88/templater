@@ -3,11 +3,13 @@ import Dashboard from "./features/dashboard/Dashboard";
 import LoadTemplatePage from "./features/template/LoadTemplatePage";
 import TemplatesPage from "./features/template/TemplatesPage";
 import EditTemplate from "./features/template/EditTemplatePage";
+import RootErrorElement from "./errors/RootErrorElement";
 
 const router = createBrowserRouter([
   {
     path: "",
     element: <Dashboard />,
+    errorElement: <RootErrorElement />,
     children: [
       { path: "" },
       {
