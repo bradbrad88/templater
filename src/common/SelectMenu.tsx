@@ -36,7 +36,7 @@ function Component(
             <Listbox.Button
               ref={ref}
               className={cn(
-                "relative w-full cursor-default rounded-lg bg-white ring-1 ring-inset ring-zinc-700 focus:ring-2 focus:ring-inset focus:ring-zinc-700 h-10 pl-6 pr-10 text-left shadow-sm focus:outline-none text-lg sm:leading-6 border-0 focus-within:ring-zinc-200",
+                "relative w-full cursor-default rounded-lg bg-white ring-1 ring-inset ring-zinc-400 focus:ring-2 focus:ring-inset focus:ring-zinc-700 h-10 pl-6 pr-10 text-left shadow-sm focus:outline-none text-lg sm:leading-6 border-0 focus-within:ring-zinc-200 py-0",
                 open && "ring-2 ring-zinc-200"
               )}
             >

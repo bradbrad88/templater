@@ -15,7 +15,7 @@ export default function Tabs({ tabs, onChange }: Props) {
   };
 
   return (
-    <nav className="-mb-px flex space-x-4" aria-label="Tabs">
+    <nav className="-mb-px grid grid-flow-col w-full gap-8" aria-label="Tabs">
       {tabs.map(tab => (
         <a
           key={tab.name}
@@ -23,13 +23,14 @@ export default function Tabs({ tabs, onChange }: Props) {
           data-href={tab.href}
           className={cn(
             tab.current
-              ? "bg-black/10 text-zinc-900 hover:text-zinc-700"
+              ? "text-indigo-800 hover:text-zinc-700"
               : "text-zinc-700 hover:text-zinc-700",
-            "rounded-full px-6 py-1.5 text-sm font-medium cursor-pointer visited:text-zinc-700"
+            "px-1 py-1.5 text-sm font-medium cursor-pointer visited:text-zinc-700 text-center flex flex-col items-center select-none"
           )}
           aria-current={tab.current ? "page" : undefined}
         >
           {tab.name}
+          {tab.current && <div className="mt-1 w-4 h-1 bg-indigo-600 rounded-full"></div>}
         </a>
       ))}
     </nav>
