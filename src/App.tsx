@@ -1,9 +1,11 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { Navigate, RouterProvider, createBrowserRouter } from "react-router-dom";
+
 import Dashboard from "./features/dashboard/Dashboard";
-import LoadTemplatePage from "./features/template/LoadTemplatePage";
-import TemplatesPage from "./features/template/TemplatesPage";
-import EditTemplate from "./features/template/EditTemplatePage";
 import RootErrorElement from "./errors/RootErrorElement";
+
+import TemplatesPage from "./features/template/TemplatesPage";
+import TemplatesDashboard from "./features/template/TemplatesDashboard";
+import EditTemplate from "./features/template/EditTemplatePage";
 
 const router = createBrowserRouter([
   {
@@ -11,14 +13,14 @@ const router = createBrowserRouter([
     element: <Dashboard />,
     errorElement: <RootErrorElement />,
     children: [
-      { path: "" },
+      { path: "", element: <Navigate to={"/templates"} /> },
       {
         path: "templates",
         element: <TemplatesPage />,
         children: [
           {
             path: "",
-            element: <LoadTemplatePage />,
+            element: <TemplatesDashboard />,
           },
           {
             path: ":templateId",
