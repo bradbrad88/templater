@@ -3,9 +3,9 @@ import ControlPanel from "features/template/controls/sidebarControls/ControlPane
 
 function Sidebar() {
   return (
-    <div className="h-full w-full bg-zinc-100">
+    <div className="h-full w-full bg-zinc-100 print:hidden">
       <Routes>
-        <Route path="" element={<>Hi</>} />
+        <Route path="" element={<></>} />
         <Route path="templates/:templateId" element={<ControlPanel />} />
       </Routes>
     </div>
