@@ -6,8 +6,8 @@ import { cn } from "../utils/cn";
 type Props = {
   options: SelectOption[];
   value: string;
-  label?: string;
   onChange: (option: string) => void;
+  id?: string;
 };
 
 export type SelectOption = {
@@ -16,7 +16,7 @@ export type SelectOption = {
 };
 
 function Component(
-  { options, value, onChange, label }: Props,
+  { options, value, onChange, id }: Props,
   ref: React.Ref<HTMLButtonElement>
 ) {
   const selected = options.find(option => option.id === value);
@@ -27,16 +27,12 @@ function Component(
     <Listbox value={selected} onChange={handleChange}>
       {({ open }) => (
         <>
-          {label && (
-            <Listbox.Label className="block text-sm font-medium leading-6 text-zinc-300">
-              {label}
-            </Listbox.Label>
-          )}
-          <div className="relative mt-2">
+          <div className="relative">
             <Listbox.Button
               ref={ref}
+              id={id}
               className={cn(
-                "relative w-full cursor-default rounded-lg bg-white ring-1 ring-inset ring-zinc-400 focus:ring-2 focus:ring-inset focus:ring-zinc-700 h-10 pl-6 pr-10 text-left shadow-sm focus:outline-none text-lg sm:leading-6 border-0 focus-within:ring-zinc-200 py-0",
+                "relative w-full cursor-default rounded-lg bg-white ring-1 ring-inset ring-zinc-400 focus:ring-2 focus:ring-inset focus:ring-zinc-700 h-10 pl-4 pr-10 text-left shadow-sm focus:outline-none text-lg sm:leading-6 border-0 focus-within:ring-zinc-200 py-0",
                 open && "ring-2 ring-zinc-200"
               )}
             >
@@ -86,7 +82,10 @@ function Component(
                               "absolute inset-y-0 right-0 flex items-center pr-4"
                             )}
                           >
-                            <TickIcon className="h-5 w-5 fill-white" aria-hidden="true" />
+                            <TickIcon
+                              className={cn("h-5 w-5", active ? "fill-white" : "fill-black")}
+                              aria-hidden="true"
+                            />
                           </span>
                         ) : null}
                       </>
