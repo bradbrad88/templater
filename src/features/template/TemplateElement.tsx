@@ -45,7 +45,7 @@ function TextElement({
       onClick={selectElement}
       style={{ fontSize: `${element.fontSize}px`, border: selected ? "solid 1px yellow" : "" }}
     >
-      {element.display}
+      {element.dataHeader}
     </div>
   );
 }

@@ -11,7 +11,7 @@ function ElementsControl() {
     const element: TemplateElement = {
       id,
       type: "text",
-      display: "Text",
+      dataHeader: "Text",
       fontSize: 12,
     };
     addElement(element);

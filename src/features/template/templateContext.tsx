@@ -19,8 +19,7 @@ export type TemplateContext = {
   saveTemplateProperties: SaveTemplatePropertiesFunction;
   addElement: (element: TemplateElement) => void;
   changeElementFontSize: (elementId: string, fontSize: number) => void;
-  // selectedElement: TemplateElement | null;
-  // selectElement: (id: string) => void;
+  changeElementDataHeader: (elementId: string, dataHeader: string) => void;
   load: (id: string) => void;
   unload: () => void;
   template: Template | null;
@@ -40,8 +39,6 @@ export const TemplateProvider = ({ children }: { children?: React.ReactNode }) =
   const [units, setUnits] = useState<string | null>(null);
   const [templateName, setTemplateName] = useState<string | null>(null);
   const [elements, setElements] = useState<TemplateElement[] | null>(null);
-
-  // const [selectedElement, setSelectedElement] = useState<TemplateElement | null>(null);
 
   const [newActions, setNewActions] = useState<Template["changeLog"]>([]);
 
@@ -122,7 +119,26 @@ export const TemplateProvider = ({ children }: { children?: React.ReactNode }) =
     setUnits(units);
   };
 
+  // Data Header is what links the text to the data column
+  const changeElementDataHeader = (elementId: string, dataHeader: string) => {
+    if (!elements) throw new Error("No template found");
+    const element = elements.find(element => element.id === elementId);
+    if (!element) throw new Error("Can't find element with ID: " + elementId);
+    if (!("dataHeader" in element))
+      throw new Error("Can't change font size on element of type: " + element.type);
+    setElements(elements =>
+      elements!.map(element => {
+        if (element.id !== elementId) return element;
+        return {
+          ...element,
+          dataHeader,
+        };
+      })
+    );
+  };
+
   const changeElementFontSize = (elementId: string, fontChange: number) => {
+    console.log(elementId);
     if (!elements) throw new Error("No template found");
     const element = elements.find(element => element.id === elementId);
     if (!element) throw new Error("Can't find element with ID: " + elementId);
@@ -132,6 +148,7 @@ export const TemplateProvider = ({ children }: { children?: React.ReactNode }) =
     setElements(elements =>
       elements!.map(element => {
         if (element.id !== elementId) return element;
+        // console.log(element.id);
         return {
           ...element,
           fontSize: newFontSize,
@@ -159,21 +176,13 @@ export const TemplateProvider = ({ children }: { children?: React.ReactNode }) =
     setNewActions(prev => [...prev, action]);
   };
 
-  // const selectElement = (id: string) => {
-  //   if (!elements) return setSelectedElement(null);
-  //   const element = elements.find(element => element.id === id);
-  //   if (!element) return setSelectedElement(null);
-  //   setSelectedElement(element);
-  // };
-
   return (
     <Context.Provider
       value={{
         saveTemplateProperties: withAction(saveTemplateProperties),
         addElement: withAction(addElement),
         changeElementFontSize: withAction(changeElementFontSize),
-        // selectElement,
-        // selectedElement,
+        changeElementDataHeader: withAction(changeElementDataHeader),
         template: template,
         load,
         unload,

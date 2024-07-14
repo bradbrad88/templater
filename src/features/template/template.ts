@@ -5,7 +5,7 @@ export const templateStorageKey = "templates";
 export const textElementSchema = z.object({
   id: z.string(),
   type: z.literal("text"),
-  display: z.string(),
+  dataHeader: z.string(),
   fontSize: z.number(),
 });
 

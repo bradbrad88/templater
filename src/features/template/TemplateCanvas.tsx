@@ -3,16 +3,17 @@ import { useElement, useTemplateMain } from "./useTemplateContext";
 
 function TemplateCanvas() {
   const { template } = useTemplateMain();
-  const { selectElement, selectedElement } = useElement();
+  const { selectElement, selectedElement, deselect } = useElement();
 
   return (
-    <div className="w-full flex justify-center py-20">
+    <div className="w-full flex justify-center py-20" onClick={deselect}>
       <div
         style={{
           height: `${template.height}${template.units}`,
           width: `${template.width}${template.units}`,
         }}
         className="border-zinc-400 border-[2px]"
+        onClick={e => e.stopPropagation()}
       >
         {template.elements.map((element, idx) => (
           <TemplateElement
