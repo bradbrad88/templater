@@ -5,6 +5,8 @@ import PropertiesControl from "./TemplatePropertiesControls";
 import ElementsControl from "./ElementsControl";
 import Tabs from "common/Tabs";
 import LayersControl from "./LayersControl";
+import Button from "common/Button";
+import { Link } from "react-router-dom";
 
 type ActiveControl = "size" | "elements" | "layers";
 
@@ -14,7 +16,7 @@ const tabs: Array<{ name: string; href: ActiveControl }> = [
   { name: "Create", href: "elements" },
 ];
 
-function ControlPanel() {
+function EditorControls() {
   const templateContext = useTemplate();
   const [activeControl, setActiveControl] = useState<ActiveControl>("size");
 
@@ -28,11 +30,15 @@ function ControlPanel() {
   };
 
   if (templateContext.error) throw templateContext.error;
+  console.log(templateContext.template);
   if (!templateContext.template) return null;
 
   return (
     <TemplateSidebarProvider {...templateContext} template={templateContext.template}>
       <div className="w-full p-4">
+        <Link to={"preview"}>
+          <Button className="w-full font-bold">Preview</Button>
+        </Link>
         <div className="p-3 border-b-[1px] border-zinc-300 w-full">
           <Tabs tabs={tabsCurrent} onChange={onTabChange} />
         </div>
@@ -44,4 +50,4 @@ function ControlPanel() {
   );
 }
 
-export default ControlPanel;
+export default EditorControls;

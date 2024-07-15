@@ -1,10 +1,10 @@
 import { useEffect } from "react";
-import { useParams } from "react-router";
+import { Outlet, useParams } from "react-router";
 import { useTemplate } from "./useTemplateContext";
 import { TemplateMainProvider } from "./templateMainContext";
-import TemplateEditor from "./TemplateEditor";
+import RibbonControls from "./controls/ribbonControls";
 
-function EditTemplatePage() {
+function ViewTemplate() {
   const { templateId } = useParams<{ templateId: string }>();
   const { load, unload, template, ...props } = useTemplate();
 
@@ -17,9 +17,10 @@ function EditTemplatePage() {
 
   return (
     <TemplateMainProvider {...props} template={template}>
-      <TemplateEditor />
+      <RibbonControls />
+      <Outlet />
     </TemplateMainProvider>
   );
 }
 
-export default EditTemplatePage;
+export default ViewTemplate;

@@ -5,7 +5,9 @@ import RootErrorElement from "./errors/RootErrorElement";
 
 import TemplatesPage from "./features/template/TemplatesPage";
 import TemplatesDashboard from "./features/template/TemplatesDashboard";
-import EditTemplate from "./features/template/EditTemplatePage";
+import ViewTemplate from "features/template/ViewTemplate";
+import PreviewTemplate from "features/template/PreviewTemplate";
+import TemplateEditor from "features/template/TemplateEditor";
 
 const router = createBrowserRouter([
   {
@@ -24,8 +26,13 @@ const router = createBrowserRouter([
           },
           {
             path: ":templateId",
-            element: <EditTemplate />,
+            element: <ViewTemplate />,
+            children: [
+              { path: "", element: <TemplateEditor /> },
+              { path: "preview", element: <PreviewTemplate /> },
+            ],
           },
+          {},
         ],
       },
     ],

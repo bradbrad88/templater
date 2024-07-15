@@ -3,7 +3,7 @@ import TextControls from "./TextControls";
 import DefaultControls from "./DefaultControls";
 import { TextElement } from "features/template/template";
 
-function RibbonControls() {
+function ElementControls() {
   const { selectedElement } = useElement();
 
   const renderControls = () => {
@@ -17,7 +17,7 @@ function RibbonControls() {
     }
   };
 
-  return <div className="border-b-[1px] border-zinc-300 py-2 px-4">{renderControls()}</div>;
+  return <div className="">{renderControls()}</div>;
 }
 
-export default RibbonControls;
+export default ElementControls;

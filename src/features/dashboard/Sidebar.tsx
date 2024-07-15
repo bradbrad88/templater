@@ -1,12 +1,12 @@
 import { Route, Routes } from "react-router";
-import ControlPanel from "features/template/controls/sidebarControls/ControlPanel";
+import TemplateSidebarControls from "features/template/controls/sidebarControls/TemplateSidebarControls";
 
 function Sidebar() {
   return (
     <div className="h-full w-full bg-zinc-100 print:hidden">
       <Routes>
         <Route path="" element={<></>} />
-        <Route path="templates/:templateId" element={<ControlPanel />} />
+        <Route path="templates/:templateId/*" element={<TemplateSidebarControls />} />
       </Routes>
     </div>
   );
