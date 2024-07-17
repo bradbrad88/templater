@@ -11,7 +11,7 @@ import TemplateEditor from "features/template/TemplateEditor";
 
 const router = createBrowserRouter([
   {
-    path: "",
+    path: "*",
     element: <Dashboard />,
     errorElement: <RootErrorElement />,
     children: [

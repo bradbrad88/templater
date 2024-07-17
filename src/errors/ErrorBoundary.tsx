@@ -24,6 +24,7 @@ const ErrorBoundary = ({ error, resetErrorBoundary }: Props) => {
       );
     }
     if (error instanceof Error) {
+      console.log("Hi");
       return (
         <div>
           <p>{error.message}</p>
@@ -32,6 +33,8 @@ const ErrorBoundary = ({ error, resetErrorBoundary }: Props) => {
       );
     }
   };
+
+  console.error(error);
 
   return (
     <div className="px-12 py-8 flex flex-col w-fit gap-2">
