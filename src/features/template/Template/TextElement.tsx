@@ -34,7 +34,7 @@ function RenderTextElement({
 }) {
   const { dataHeader, fontSize } = element;
 
-  const text = data ? data[dataHeader] || dataHeader || "" : dataHeader || "";
+  const text = data ? data[dataHeader] || "" : dataHeader || "";
 
   return (
     <div className="relative" style={{ fontSize: `${fontSize}px` }}>
