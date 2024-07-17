@@ -30,7 +30,6 @@ function EditorControls() {
   };
 
   if (templateContext.error) throw templateContext.error;
-  console.log(templateContext.template);
   if (!templateContext.template) return null;
 
   return (

@@ -119,7 +119,6 @@ function DisplayPage({ data }: { data: DataSource }) {
         style={{ gridTemplateColumns: `repeat(${columnCount}, minmax(0, 1fr))` }}
       >
         {row.map((value, columnIndex) => {
-          console.log(value);
           return (
             <div
               key={`row-${rowIndex}-column-${columnIndex}`}
