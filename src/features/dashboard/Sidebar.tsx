@@ -3,7 +3,7 @@ import TemplateSidebarControls from "features/template/controls/sidebarControls/
 
 function Sidebar() {
   return (
-    <div className="h-full w-full bg-zinc-100 print:hidden">
+    <div className="h-full w-full bg-zinc-100">
       <Routes>
         <Route path="" element={<></>} />
         <Route path="templates/:templateId/*" element={<TemplateSidebarControls />} />

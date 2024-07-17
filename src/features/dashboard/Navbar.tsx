@@ -9,7 +9,7 @@ const navItems: Parameters<typeof Navitem>[0][] = [{ display: "Templates", to: "
 
 function Navbar() {
   return (
-    <nav className="flex justify-between w-full print:hidden">
+    <nav className="flex justify-between w-full">
       <div className="flex flex-row items-center">
         {navItems.map(item => (
           <Navitem {...item} key={item.display} />
