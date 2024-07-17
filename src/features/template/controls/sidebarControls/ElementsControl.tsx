@@ -13,6 +13,8 @@ function ElementsControl() {
       type: "text",
       dataHeader: "Text",
       fontSize: 12,
+      left: 0,
+      top: 0,
     };
     addElement(element);
   };

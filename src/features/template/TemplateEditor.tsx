@@ -1,29 +1,20 @@
-import TemplateElement from "./TemplateElement";
+import Template from "./Template/Template";
 import { useElement, useTemplateMain } from "./useTemplateContext";
 
 function TemplateEditor() {
-  const { template } = useTemplateMain();
+  const { template, moveElement } = useTemplateMain();
+
   const { selectElement, selectedElement, deselect } = useElement();
 
   return (
     <div className="w-full flex justify-center py-20" onClick={deselect}>
-      <div
-        style={{
-          height: `${template.height}${template.units}`,
-          width: `${template.width}${template.units}`,
-        }}
-        className="border-zinc-400 border-[2px]"
-        onClick={e => e.stopPropagation()}
-      >
-        {template.elements.map((element, idx) => (
-          <TemplateElement
-            key={`${idx}-${element.type}`}
-            templateElement={element}
-            selectElement={() => selectElement(element)}
-            selected={!!(selectedElement && selectedElement.id === element.id)}
-          />
-        ))}
-      </div>
+      <Template
+        template={template}
+        selectedElement={selectedElement?.id}
+        onMoveElement={moveElement}
+        onSelectElement={selectElement}
+        editMode
+      />
     </div>
   );
 }

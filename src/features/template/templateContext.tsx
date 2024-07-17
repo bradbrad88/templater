@@ -7,6 +7,7 @@ import {
   templateSchema,
   templateStorageKey,
 } from "./template";
+import { OnMoveElement } from "./Template/Template";
 
 export type SaveTemplatePropertiesFunction = (size: {
   templateName: Template["templateName"];
@@ -20,6 +21,7 @@ export type TemplateContext = {
   addElement: (element: TemplateElement) => void;
   changeElementFontSize: (elementId: string, fontSize: number) => void;
   changeElementDataHeader: (elementId: string, dataHeader: string) => void;
+  moveElement: OnMoveElement;
   load: (id: string) => void;
   unload: () => void;
   template: Template | null;
@@ -138,7 +140,6 @@ export const TemplateProvider = ({ children }: { children?: React.ReactNode }) =
   };
 
   const changeElementFontSize = (elementId: string, fontChange: number) => {
-    console.log(elementId);
     if (!elements) throw new Error("No template found");
     const element = elements.find(element => element.id === elementId);
     if (!element) throw new Error("Can't find element with ID: " + elementId);
@@ -148,10 +149,23 @@ export const TemplateProvider = ({ children }: { children?: React.ReactNode }) =
     setElements(elements =>
       elements!.map(element => {
         if (element.id !== elementId) return element;
-        // console.log(element.id);
         return {
           ...element,
           fontSize: newFontSize,
+        };
+      })
+    );
+  };
+
+  const moveElement: OnMoveElement = (elementId, delta) => {
+    if (!elements) return;
+    setElements(elements =>
+      elements!.map(el => {
+        if (el.id !== elementId) return el;
+        return {
+          ...el,
+          top: delta.top + el.top,
+          left: delta.left + el.left,
         };
       })
     );
@@ -183,6 +197,7 @@ export const TemplateProvider = ({ children }: { children?: React.ReactNode }) =
         addElement: withAction(addElement),
         changeElementFontSize: withAction(changeElementFontSize),
         changeElementDataHeader: withAction(changeElementDataHeader),
+        moveElement: withAction(moveElement),
         template: template,
         load,
         unload,

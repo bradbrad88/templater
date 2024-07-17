@@ -2,18 +2,27 @@ import { z } from "zod";
 
 export const templateStorageKey = "templates";
 
-export const textElementSchema = z.object({
+export const elementBase = z.object({
   id: z.string(),
-  type: z.literal("text"),
-  dataHeader: z.string(),
-  fontSize: z.number(),
+  top: z.number(),
+  left: z.number(),
 });
 
-export const imageElementSchema = z.object({
-  id: z.string(),
-  type: z.literal("image"),
-  src: z.string(),
-});
+export const textElementSchema = z
+  .object({
+    type: z.literal("text"),
+    dataHeader: z.string(),
+    fontSize: z.number(),
+  })
+  .and(elementBase);
+
+export const imageElementSchema = z
+  .object({
+    type: z.literal("image"),
+    src: z.string(),
+    width: z.number(),
+  })
+  .and(elementBase);
 
 export const elementSchema = z.union([textElementSchema, imageElementSchema], {
   message: "Template schema missing elements array",
