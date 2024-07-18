@@ -25,3 +25,10 @@ function isRecord(item: unknown): asserts item is Record<string, unknown> {
     throw new TypeError("Expecting object, received " + typeof item);
   if (Array.isArray(item)) throw new TypeError("Expecting object, received array");
 }
+
+export function moveArrayItem<T>(arr: Array<T>, oldIndex: number, newIndex: number) {
+  const newArr = [...arr];
+  const item = newArr.splice(oldIndex, 1)[0];
+  newArr.splice(newIndex, 0, item);
+  return newArr as Array<T>;
+}
