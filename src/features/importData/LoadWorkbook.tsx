@@ -8,7 +8,7 @@ import Label from "common/Label";
 import type { WorkBook } from "xlsx";
 import type { BodyData, DataSource, Headers } from "./importData";
 
-function LoadWorkbook() {
+function LoadWorkbook({ close = () => {} }: { close?: () => void }) {
   const [dataSource, setDataSource] = useState<DataSource | null>(null);
   const [workbook, setWorkbook] = useState<WorkBook | null>(null);
   const { uploadData } = useImportData();
@@ -18,6 +18,7 @@ function LoadWorkbook() {
   const onImport = () => {
     const data = parseSpreadsheet(workbook!, page);
     uploadData({ ...data, sourceName });
+    close();
   };
 
   const onFileChange: React.ChangeEventHandler<HTMLInputElement> = async e => {

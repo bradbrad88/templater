@@ -4,6 +4,7 @@ import { DataSource, dataSourceSchema, localStorageKey } from "./importData";
 type ContextType = {
   data: DataSource | null;
   uploadData: (data: DataSource) => void;
+  removeData: () => void;
 };
 
 type Props = {
@@ -18,18 +19,23 @@ export const ImportDataProvider = ({ children }: Props) => {
   useEffect(() => {
     const store = localStorage.getItem(localStorageKey);
     if (!store) return;
-    // const json = JSON.parse(store);
-
     const parsedData = dataSourceSchema.parse(JSON.parse(store));
     setData(parsedData);
   }, []);
+
+  const removeData = () => {
+    localStorage.removeItem(localStorageKey);
+    setData(null);
+  };
 
   const uploadData = (data: DataSource) => {
     setData(data);
     localStorage.setItem(localStorageKey, JSON.stringify(data));
   };
 
-  return <Context.Provider value={{ data, uploadData }}>{children}</Context.Provider>;
+  return (
+    <Context.Provider value={{ data, uploadData, removeData }}>{children}</Context.Provider>
+  );
 };
 
 export default Context;

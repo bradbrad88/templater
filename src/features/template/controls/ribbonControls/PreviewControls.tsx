@@ -6,10 +6,12 @@ function PreviewControls() {
   };
 
   return (
-    <div className="w-full h-full flex items-center">
-      <Button onClick={onClick} className="px-10 font-bold" variant={"outline"}>
-        Print
-      </Button>
+    <div className="w-full h-full flex items-center px-4 pb-3.5">
+      <div className="h-full flex items-end">
+        <Button onClick={onClick} className="px-10 font-bold" variant={"outline"}>
+          Print
+        </Button>
+      </div>
     </div>
   );
 }
