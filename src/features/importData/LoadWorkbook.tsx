@@ -187,7 +187,7 @@ function parseBody(body: string[][], columnCount: number): BodyData[] {
     }
     arr.push(row);
   }
-  return arr;
+  return arr.filter(row => !row.every(cell => !cell?.value));
 }
 
 export default LoadWorkbook;
