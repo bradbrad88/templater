@@ -14,6 +14,7 @@ export const textElementSchema = z
     dataHeader: z.string(),
     fontSize: z.number(),
     fontFamily: z.string().optional(),
+    color: z.string().optional(),
   })
   .and(elementBase);
 
@@ -56,3 +57,4 @@ export type TemplateElement = z.infer<typeof elementSchema>;
 
 export type TextElement = z.infer<typeof textElementSchema>;
 export type ImageElement = z.infer<typeof imageElementSchema>;
+export type ElementType = TemplateElement["type"];

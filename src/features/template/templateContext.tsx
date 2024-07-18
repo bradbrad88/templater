@@ -2,12 +2,14 @@ import { createContext, useCallback, useEffect, useRef, useState } from "react";
 import { z } from "zod";
 import {
   Action,
+  ElementType,
   Template,
   TemplateElement,
   templateSchema,
   templateStorageKey,
 } from "./template";
 import { OnMoveElement } from "./Template/Template";
+import { updateArrayItemById } from "utils/arrays";
 
 export type SaveTemplatePropertiesFunction = (size: {
   templateName: Template["templateName"];
@@ -21,6 +23,7 @@ export type TemplateContext = {
   addElement: (element: TemplateElement) => void;
   changeElementFontSize: (elementId: string, fontSize: number) => void;
   changeElementFontFamily: (elementId: string, fontFamily: string) => void;
+  changeElementFontColour: (elementId: string, color: string | undefined) => void;
   changeElementDataHeader: (elementId: string, dataHeader: string) => void;
   moveElement: OnMoveElement;
   load: (id: string) => void;
@@ -175,6 +178,13 @@ export const TemplateProvider = ({ children }: { children?: React.ReactNode }) =
     );
   };
 
+  const changeElementFontColour = (elementId: string, color: string | undefined) => {
+    const element = getElement(elementId, "text");
+    setElements(elements =>
+      elements ? updateArrayItemById(elements, element.id, { ...element, color }) : null
+    );
+  };
+
   const moveElement: OnMoveElement = (elementId, delta) => {
     if (!elements) return;
     setElements(elements =>
@@ -208,6 +218,18 @@ export const TemplateProvider = ({ children }: { children?: React.ReactNode }) =
     setNewActions(prev => [...prev, action]);
   };
 
+  function getElement<T extends ElementType>(
+    id: string,
+    type: T
+  ): Extract<TemplateElement, { type: T }> {
+    if (!elements) throw new Error("No template found");
+    const element = elements.find(element => element.id === id);
+    if (!element) throw new Error("Can't find element with ID: " + id);
+    if (element.type !== type)
+      throw new Error("Can't change font size on element of type: " + element.type);
+    return element as Extract<TemplateElement, { type: T }>;
+  }
+
   return (
     <Context.Provider
       value={{
@@ -216,6 +238,7 @@ export const TemplateProvider = ({ children }: { children?: React.ReactNode }) =
         changeElementFontSize: withAction(changeElementFontSize),
         changeElementFontFamily: withAction(changeElementFontFamily),
         changeElementDataHeader: withAction(changeElementDataHeader),
+        changeElementFontColour: withAction(changeElementFontColour),
         moveElement: withAction(moveElement),
         template: template,
         load,

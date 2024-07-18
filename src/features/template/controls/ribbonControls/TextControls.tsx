@@ -11,8 +11,11 @@ function TextControls({ element }: { element: TextElement }) {
   return (
     <div className="flex flex-row items-end gap-6">
       <DataHeader element={element} />
-      <FontSize element={element} />
-      <FontSelection element={element} />
+      <div className="flex gap-1 items-end">
+        <FontSelection element={element} />
+        <FontSize element={element} />
+        <ColourSelection element={element} />
+      </div>
     </div>
   );
 }
@@ -106,7 +109,7 @@ function FontSize({ element }: { element: TextElement }) {
 
   return (
     <div className="w-24">
-      <Label htmlFor={id}>Font size</Label>
+      {/* <Label htmlFor={id}>Font size</Label> */}
 
       <Input
         id={id}
@@ -138,6 +141,36 @@ function FontSelection({ element }: { element: TextElement }) {
         value={element.fontFamily || ""}
         fontSelector
         onChange={onChange}
+      />
+    </div>
+  );
+}
+
+function ColourSelection({ element }: { element: TextElement }) {
+  const { changeElementFontColour } = useTemplateMain();
+  const [colour, setColour] = useState(element.color);
+  const id = useId();
+
+  const onBlur: React.ChangeEventHandler<HTMLInputElement> = () => {
+    console.log(colour);
+    changeElementFontColour(element.id, colour);
+  };
+
+  const onChange: React.ChangeEventHandler<HTMLInputElement> = e => {
+    const colour = e.target.value;
+    setColour(colour);
+  };
+
+  return (
+    <div className="block">
+      {/* <Label htmlFor={id}>Font colour</Label> */}
+      <input
+        id={id}
+        className="h-10 block border-[1px] border-zinc-400 rounded-lg outline-none p-1"
+        type="color"
+        onBlur={onBlur}
+        onChange={onChange}
+        value={element.color || "#000000"}
       />
     </div>
   );
