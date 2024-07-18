@@ -34,7 +34,7 @@ function EditorControls() {
 
   return (
     <TemplateSidebarProvider {...templateContext} template={templateContext.template}>
-      <div className="w-full p-4">
+      <div className="w-full p-4 mt-2">
         <Link to={"preview"}>
           <Button className="w-full font-bold">Preview</Button>
         </Link>
