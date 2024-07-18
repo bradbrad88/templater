@@ -1,3 +1,4 @@
+import { cn } from "utils/cn";
 import { Template as TemplateType } from "../template";
 import TemplateElement from "./TemplateElement";
 import { DndContext, DragEndEvent, MouseSensor, useSensor } from "@dnd-kit/core";
@@ -56,13 +57,18 @@ function Template({
 function RenderTemplateFrame({
   template,
   children,
+  editMode,
 }: {
   template: TemplateType;
   children?: React.ReactNode;
+  editMode?: boolean;
 }) {
   return (
     <div
-      className="relative border-[1px] border-zinc-700 overflow-hidden"
+      className={cn(
+        "relative border-[1px] border-zinc-700 overflow-hidden",
+        editMode && "overflow-visible"
+      )}
       style={{
         width: `${template.width}${template.units}`,
         height: `${template.height}${template.units}`,
@@ -109,7 +115,7 @@ function RenderDroppableTemplate({
 
   return (
     <DndContext id={id} onDragEnd={onDragEnd} sensors={[sensor]}>
-      <RenderTemplateFrame template={props.template}>
+      <RenderTemplateFrame template={props.template} editMode>
         <RenderElements {...props} editMode />
       </RenderTemplateFrame>
     </DndContext>
