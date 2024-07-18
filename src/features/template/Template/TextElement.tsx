@@ -32,12 +32,12 @@ function RenderTextElement({
   data?: TemplateData;
   children?: React.ReactNode;
 }) {
-  const { dataHeader, fontSize } = element;
+  const { dataHeader, fontSize, fontFamily } = element;
 
   const text = data ? data[dataHeader] || "" : dataHeader || "";
 
   return (
-    <div className="relative" style={{ fontSize: `${fontSize}px` }}>
+    <div className="relative" style={{ fontSize: `${fontSize}px`, fontFamily }}>
       {children && <div className="absolute h-full w-full">{children}</div>}
       {text}
     </div>

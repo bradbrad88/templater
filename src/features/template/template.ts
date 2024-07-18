@@ -13,6 +13,7 @@ export const textElementSchema = z
     type: z.literal("text"),
     dataHeader: z.string(),
     fontSize: z.number(),
+    fontFamily: z.string().optional(),
   })
   .and(elementBase);
 

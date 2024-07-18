@@ -7,6 +7,7 @@ type Props = {
   options: SelectOption[];
   value: string;
   onChange: (option: string) => void;
+  fontSelector?: boolean;
   id?: string;
 };
 
@@ -16,7 +17,7 @@ export type SelectOption = {
 };
 
 function Component(
-  { options, value, onChange, id }: Props,
+  { options, value, onChange, id, fontSelector }: Props,
   ref: React.Ref<HTMLButtonElement>
 ) {
   const selected = options.find(option => option.id === value);
@@ -71,6 +72,7 @@ function Component(
                             selected ? "font-semibold" : "font-normal",
                             "block truncate"
                           )}
+                          style={{ fontFamily: fontSelector ? option.value : "inherit" }}
                         >
                           {option.value}
                         </span>

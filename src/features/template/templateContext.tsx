@@ -20,6 +20,7 @@ export type TemplateContext = {
   saveTemplateProperties: SaveTemplatePropertiesFunction;
   addElement: (element: TemplateElement) => void;
   changeElementFontSize: (elementId: string, fontSize: number) => void;
+  changeElementFontFamily: (elementId: string, fontFamily: string) => void;
   changeElementDataHeader: (elementId: string, dataHeader: string) => void;
   moveElement: OnMoveElement;
   load: (id: string) => void;
@@ -157,6 +158,23 @@ export const TemplateProvider = ({ children }: { children?: React.ReactNode }) =
     );
   };
 
+  const changeElementFontFamily = (elementId: string, fontFamily: string) => {
+    if (!elements) throw new Error("No template found");
+    const element = elements.find(element => element.id === elementId);
+    if (!element) throw new Error("Can't find element with ID: " + elementId);
+    if (!("fontSize" in element))
+      throw new Error("Can't change font size on element of type: " + element.type);
+    setElements(elements =>
+      elements!.map(element => {
+        if (element.id !== elementId) return element;
+        return {
+          ...element,
+          fontFamily,
+        };
+      })
+    );
+  };
+
   const moveElement: OnMoveElement = (elementId, delta) => {
     if (!elements) return;
     setElements(elements =>
@@ -196,6 +214,7 @@ export const TemplateProvider = ({ children }: { children?: React.ReactNode }) =
         saveTemplateProperties: withAction(saveTemplateProperties),
         addElement: withAction(addElement),
         changeElementFontSize: withAction(changeElementFontSize),
+        changeElementFontFamily: withAction(changeElementFontFamily),
         changeElementDataHeader: withAction(changeElementDataHeader),
         moveElement: withAction(moveElement),
         template: template,

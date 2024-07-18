@@ -8,6 +8,10 @@ import TemplatesDashboard from "./features/template/TemplatesDashboard";
 import ViewTemplate from "features/template/ViewTemplate";
 import PreviewTemplate from "features/template/PreviewTemplate";
 import TemplateEditor from "features/template/TemplateEditor";
+import Fonts from "webfontloader";
+import { googleFonts } from "./config/fonts";
+
+Fonts.load({ google: { families: googleFonts } });
 
 const router = createBrowserRouter([
   {

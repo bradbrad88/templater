@@ -5,12 +5,14 @@ import { TextElement } from "features/template/template";
 import SelectMenu from "common/SelectMenu";
 import Input from "common/Input";
 import Label from "common/Label";
+import { googleFonts } from "src/config/fonts";
 
 function TextControls({ element }: { element: TextElement }) {
   return (
     <div className="flex flex-row items-end gap-6">
       <DataHeader element={element} />
       <FontSize element={element} />
+      <FontSelection element={element} />
     </div>
   );
 }
@@ -113,6 +115,29 @@ function FontSize({ element }: { element: TextElement }) {
         className="w-full"
         onChange={onFontSizeChange}
         value={element.fontSize}
+      />
+    </div>
+  );
+}
+
+function FontSelection({ element }: { element: TextElement }) {
+  const { changeElementFontFamily } = useTemplateMain();
+  const fonts = [...googleFonts];
+  const id = useId();
+  fonts.sort();
+  const options = fonts.map(font => ({ id: font, value: font }));
+  const onChange = (value: string) => {
+    changeElementFontFamily(element.id, value);
+  };
+  return (
+    <div className="w-48">
+      <Label htmlFor={id}>Font</Label>
+      <SelectMenu
+        id={id}
+        options={options}
+        value={element.fontFamily}
+        fontSelector
+        onChange={onChange}
       />
     </div>
   );
