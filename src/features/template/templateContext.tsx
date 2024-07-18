@@ -9,7 +9,7 @@ import {
   templateStorageKey,
 } from "./template";
 import { OnMoveElement } from "./Template/Template";
-import { updateArrayItemById } from "utils/arrays";
+import { moveArrayItem, updateArrayItemById } from "utils/arrays";
 
 export type SaveTemplatePropertiesFunction = (size: {
   templateName: Template["templateName"];
@@ -25,6 +25,7 @@ export type TemplateContext = {
   changeElementFontFamily: (elementId: string, fontFamily: string) => void;
   changeElementFontColour: (elementId: string, color: string | undefined) => void;
   changeElementDataHeader: (elementId: string, dataHeader: string) => void;
+  rearrangeElementOrder: (elementId: string, newIndex: number) => void;
   moveElement: OnMoveElement;
   load: (id: string) => void;
   unload: () => void;
@@ -199,6 +200,13 @@ export const TemplateProvider = ({ children }: { children?: React.ReactNode }) =
     );
   };
 
+  const rearrangeElementOrder = (elementId: string, newIndex: number) => {
+    const oldIndex = elements?.findIndex(el => el.id === elementId);
+    if (oldIndex == null)
+      throw new Error("Could not find index of Template Element: " + elementId);
+    setElements(prev => (prev ? moveArrayItem(prev, oldIndex, newIndex) : null));
+  };
+
   const addElement = (element: TemplateElement) => {
     setElements(prev => [...prev!, element]);
   };
@@ -239,6 +247,7 @@ export const TemplateProvider = ({ children }: { children?: React.ReactNode }) =
         changeElementFontFamily: withAction(changeElementFontFamily),
         changeElementDataHeader: withAction(changeElementDataHeader),
         changeElementFontColour: withAction(changeElementFontColour),
+        rearrangeElementOrder: withAction(rearrangeElementOrder),
         moveElement: withAction(moveElement),
         template: template,
         load,
