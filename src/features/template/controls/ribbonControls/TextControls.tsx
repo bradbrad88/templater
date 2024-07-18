@@ -135,7 +135,7 @@ function FontSelection({ element }: { element: TextElement }) {
       <SelectMenu
         id={id}
         options={options}
-        value={element.fontFamily}
+        value={element.fontFamily || ""}
         fontSelector
         onChange={onChange}
       />
