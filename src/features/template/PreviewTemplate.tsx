@@ -59,7 +59,10 @@ function PreviewTemplate() {
       {createPortal(
         <div className="flex-wrap hidden print:flex">
           {data.bodyData.map((_, idx) => (
-            <div className="break-inside-avoid break-inside-avoid-columnn w-fit grow-0 shrink-0">
+            <div
+              key={idx}
+              className="break-inside-avoid break-inside-avoid-columnn w-fit grow-0 shrink-0"
+            >
               <Template template={template} data={getRowData(idx)} />
             </div>
           ))}
