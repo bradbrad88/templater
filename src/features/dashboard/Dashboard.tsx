@@ -1,14 +1,25 @@
+import { Suspense } from "react";
+import { ErrorBoundary } from "react-error-boundary";
 import { Outlet } from "react-router";
+import {
+  QueryClient,
+  QueryClientProvider,
+  useQueryErrorResetBoundary,
+} from "@tanstack/react-query";
+import { ImportDataProvider } from "features/importData/ImportDataContext";
+import { ElementSelectorProvider } from "features/template/ElementSelectorContext";
+import ErrorComponent from "src/errors/ErrorBoundary";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
-import { TemplateProvider } from "../template/templateContext";
-import { ElementSelectorProvider } from "features/template/ElementSelectorContext";
-import { ImportDataProvider } from "features/importData/ImportDataContext";
+import Loading from "common/Loading";
+
+const client = new QueryClient();
 
 function Dashboard() {
+  const { reset } = useQueryErrorResetBoundary();
   return (
-    <ImportDataProvider>
-      <TemplateProvider>
+    <QueryClientProvider client={client}>
+      <ImportDataProvider>
         <ElementSelectorProvider>
           <div className="h-[64px]">
             <Header />
@@ -19,12 +30,16 @@ function Dashboard() {
           >
             <Sidebar />
             <main>
-              <Outlet />
+              <ErrorBoundary onReset={reset} FallbackComponent={ErrorComponent}>
+                <Suspense fallback={<Loading />}>
+                  <Outlet />
+                </Suspense>
+              </ErrorBoundary>
             </main>
           </div>
         </ElementSelectorProvider>
-      </TemplateProvider>
-    </ImportDataProvider>
+      </ImportDataProvider>
+    </QueryClientProvider>
   );
 }
 

@@ -1,4 +1,6 @@
 import { z } from "zod";
+import db from "src/config/db";
+import NotFoundError from "src/errors/NotFoundError";
 
 export const templateStorageKey = "templates";
 
@@ -33,10 +35,6 @@ export const elementSchema = z.union([textElementSchema, imageElementSchema], {
 export const unitSchema = z.union([z.literal("mm"), z.literal("cm"), z.literal("in")]);
 
 export const actionTypeSchema = z.union([z.literal("setSize"), z.literal("setTemplateName")]);
-export const actionSchema = z.object({
-  action: z.string(),
-  params: z.unknown().array(),
-});
 
 export const templateSchema = z.object({
   id: z.string(),
@@ -45,16 +43,37 @@ export const templateSchema = z.object({
   height: z.number().gt(0),
   units: unitSchema,
   elements: elementSchema.array(),
-  changeLog: actionSchema.array(),
 });
 
-export type Template = z.infer<typeof templateSchema>;
+export const templateWithHistorySchema = templateSchema.extend({
+  history: templateSchema.array(),
+  future: templateSchema.array(),
+});
 
+export type TemplateFilters = {
+  templateName?: string;
+};
+
+export type Template = z.infer<typeof templateWithHistorySchema>;
 export type ActionType = z.infer<typeof actionTypeSchema>;
-export type Action = z.infer<typeof actionSchema>;
-
 export type TemplateElement = z.infer<typeof elementSchema>;
-
 export type TextElement = z.infer<typeof textElementSchema>;
 export type ImageElement = z.infer<typeof imageElementSchema>;
 export type ElementType = TemplateElement["type"];
+
+export const getTemplateById = async (id: string) => {
+  const template = await db.getItemById("templates", id);
+  if (!template) throw new NotFoundError();
+  const validatedTemplate = templateWithHistorySchema.parse(template);
+  return validatedTemplate;
+};
+
+export const getTemplateList = async (_: TemplateFilters) => {
+  const templates = await db.getAll("templates");
+  const validatedTemplates = templateWithHistorySchema.array().parse(templates);
+  return validatedTemplates;
+};
+
+export const saveTemplate = async (template: Template) => {
+  await db.writeItem("templates", template);
+};
