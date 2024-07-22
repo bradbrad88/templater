@@ -10,7 +10,7 @@ type Props = {
   element: TemplateElementType;
   data?: Record<string, string>;
   editMode?: boolean;
-  selectedElement?: string;
+  selectedElement?: string | null;
   onSelectElement?: OnSelectElement;
 };
 function TemplateElement(props: Props) {
@@ -24,7 +24,7 @@ function TemplateElement(props: Props) {
         return <TextElement {...props} element={props.element} />;
       }
       case "image":
-        return <ImageElement {...props} element={props.element} />;
+        return <ImageElement {...props} element={props.element} isSelected={isSelected} />;
       default:
         exhaustiveSwitchGuard(type);
     }

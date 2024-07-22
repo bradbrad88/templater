@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useTemplateSidebar } from "../../useTemplateContext";
+import { useTemplate } from "../../useTemplateContext";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "common/Form";
 import Input from "common/Input";
 import Button from "common/Button";
@@ -24,7 +24,7 @@ const units = [
 ] as const;
 
 function TemplatePropertiesControl() {
-  const { template, saveTemplateProperties } = useTemplateSidebar();
+  const { template, saveTemplateProperties } = useTemplate();
 
   const form = useForm<SizeSchema>({
     resolver: zodResolver(sizeSchema),

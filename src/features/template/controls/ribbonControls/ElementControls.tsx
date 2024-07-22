@@ -1,10 +1,13 @@
-import { useElement } from "features/template/useTemplateContext";
+import { useElement, useTemplate } from "features/template/useTemplateContext";
 import TextControls from "./TextControls";
 import DefaultControls from "./DefaultControls";
 import { TextElement } from "features/template/template";
 
 function ElementControls() {
-  const { selectedElement } = useElement();
+  const { selectedElementId } = useElement();
+  const { template } = useTemplate();
+
+  const selectedElement = template.elements.find(el => el.id === selectedElementId);
 
   const renderControls = () => {
     const type = selectedElement ? selectedElement.type : "default";

@@ -1,34 +1,37 @@
 import { useState } from "react";
 import { DndContext, DragEndEvent, DragStartEvent } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
-import { useElement, useTemplateSidebar } from "features/template/useTemplateContext";
+import { moveArrayItem } from "utils/arrays";
+import { useElement, useTemplate } from "features/template/useTemplateContext";
+import useSortableItems from "src/hooks/useSortableItems";
 import { TemplateElement } from "features/template/template";
 import { SortableItem } from "common/dnd/SortableItem";
 import DragOverlay from "common/dnd/DragOverlay";
 import { DragIcon } from "common/icons";
 
 function LayersControl() {
-  const { template, rearrangeElementOrder } = useTemplateSidebar();
+  const { template, rearrangeElementOrder } = useTemplate();
+  const [items, setItems] = useSortableItems(template.elements, "id");
   const [isDragging, setIsDragging] = useState<string | null>(null);
-
-  if (!template) throw new Error("Template data missing, can not render layers");
-
-  const items = template.elements.map(el => el.id);
   const draggingElement = template.elements.find(el => el.id === isDragging);
 
   return (
     <DndContext onDragStart={onDragStart} onDragEnd={onDragEnd} onDragCancel={onDragCancel}>
       <SortableContext items={items} strategy={verticalListSortingStrategy}>
         <div className="flex flex-col gap-3">
-          {template.elements.map(element => (
-            <SortableItem
-              id={element.id}
-              key={element.id}
-              type="element"
-              handle
-              render={handle => <ElementControl element={element} Handle={handle} />}
-            ></SortableItem>
-          ))}
+          {items.map(elementId => {
+            const element = template.elements.find(el => el.id === elementId);
+            if (!element) return null;
+            return (
+              <SortableItem
+                id={element.id}
+                key={element.id}
+                type="element"
+                handle
+                render={handle => <ElementControl element={element} Handle={handle} />}
+              ></SortableItem>
+            );
+          })}
         </div>
         <DragOverlay isDragging={!!draggingElement}>
           {draggingElement && <ElementControl element={draggingElement} />}
@@ -41,9 +44,13 @@ function LayersControl() {
     setIsDragging(String(e.active.id));
   }
   function onDragEnd(e: DragEndEvent) {
+    const oldIndex = items.indexOf(String(e.active.id));
     const newIndex = items.indexOf(String(e.over?.id));
     const elementId = String(e.active.id);
+    // Template operation
     rearrangeElementOrder(elementId, newIndex);
+    // Local state
+    setItems(prev => moveArrayItem(prev, oldIndex, newIndex));
     setIsDragging(null);
   }
   function onDragCancel() {

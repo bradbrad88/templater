@@ -1,25 +1,18 @@
-import { useEffect } from "react";
 import { Outlet, useParams } from "react-router";
-import { useTemplate } from "./useTemplateContext";
-import { TemplateMainProvider } from "./templateMainContext";
 import RibbonControls from "./controls/ribbonControls";
+import { TemplateProvider } from "./templateContext";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { templateQuery } from "./templateQueries";
 
 function ViewTemplate() {
   const { templateId } = useParams<{ templateId: string }>();
-  const { load, unload, template, ...props } = useTemplate();
-
-  useEffect(() => {
-    if (templateId) load(templateId);
-    return () => unload();
-  }, [templateId, load, unload]);
-
-  if (!template) return null;
+  const { data } = useSuspenseQuery(templateQuery(templateId!));
 
   return (
-    <TemplateMainProvider {...props} template={template}>
+    <TemplateProvider template={data}>
       <RibbonControls />
       <Outlet />
-    </TemplateMainProvider>
+    </TemplateProvider>
   );
 }
 

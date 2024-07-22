@@ -1,7 +1,7 @@
 import { cn } from "utils/cn";
 import { Template as TemplateType } from "../template";
 import TemplateElement from "./TemplateElement";
-import { DndContext, DragEndEvent, MouseSensor, useSensor } from "@dnd-kit/core";
+import { DndContext, DragEndEvent, PointerSensor, useSensor } from "@dnd-kit/core";
 
 /*
   Template can either be in view mode or edit mode.
@@ -25,7 +25,7 @@ type Props = {
   template: TemplateType;
   editMode?: boolean;
   data?: Record<string, string>;
-  selectedElement?: string;
+  selectedElement?: string | null;
   onMoveElement?: OnMoveElement;
   onSelectElement?: OnSelectElement;
 };
@@ -101,13 +101,13 @@ function RenderDroppableTemplate({
 }: {
   template: TemplateType;
   data?: TemplateData;
-  selectedElement?: string;
+  selectedElement?: string | null;
   onMoveElement?: OnMoveElement;
   onSelectElement?: OnSelectElement;
 }) {
   const id = props.template.id;
 
-  const sensor = useSensor(MouseSensor, { activationConstraint: { distance: 10 } });
+  const sensor = useSensor(PointerSensor, { activationConstraint: { distance: 10 } });
 
   const onDragEnd = ({ active, delta }: DragEndEvent) => {
     if (onMoveElement) onMoveElement(String(active.id), { left: delta.x, top: delta.y });

@@ -1,16 +1,16 @@
 import Template from "./Template/Template";
-import { useElement, useTemplateMain } from "./useTemplateContext";
+import { useElement, useTemplate } from "./useTemplateContext";
 
 function TemplateEditor() {
-  const { template, moveElement } = useTemplateMain();
+  const { template, moveElement } = useTemplate();
 
-  const { selectElement, selectedElement, deselect } = useElement();
+  const { selectElement, selectedElementId, deselect } = useElement();
 
   return (
     <div className="w-full flex justify-center py-20" onClick={deselect}>
       <Template
         template={template}
-        selectedElement={selectedElement?.id}
+        selectedElement={selectedElementId}
         onMoveElement={moveElement}
         onSelectElement={selectElement}
         editMode

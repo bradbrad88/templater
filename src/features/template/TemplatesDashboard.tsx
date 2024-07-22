@@ -1,13 +1,14 @@
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
-import { z } from "zod";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { v4 as uuid } from "uuid";
-import { Template, templateSchema, templateStorageKey } from "./template";
+import { Template } from "./template";
+import { templateListQuery } from "./templateQueries";
 import { AddIcon } from "../../common/icons";
+import useMutateTemplate from "./useMutateTemplate";
 
 function TemplatesDashboard() {
-  const templates = useGetTemplates();
+  const { data: templates } = useSuspenseQuery(templateListQuery({}));
 
   return (
     <div className="flex flex-col items-center pt-20 px-10">
@@ -20,8 +21,9 @@ function TemplatesDashboard() {
 }
 
 function CreateTemplate() {
+  const { mutateAsync: createTemplate } = useMutateTemplate();
   const nav = useNavigate();
-  const onCreateTemplate = () => {
+  const onCreateTemplate = async () => {
     const id = uuid();
     const template: Template = {
       id,
@@ -30,13 +32,10 @@ function CreateTemplate() {
       height: 55,
       units: "mm",
       elements: [],
-      changeLog: [],
+      future: [],
+      history: [],
     };
-    const templates = JSON.parse(localStorage.getItem("templates") || "{}");
-    const validatedTemplates = z.record(z.string(), templateSchema).parse(templates);
-    validatedTemplates[template.id] = template;
-    const str = JSON.stringify(validatedTemplates);
-    localStorage.setItem("templates", str);
+    await createTemplate(template);
     nav(id);
   };
 
@@ -75,25 +74,4 @@ function TemplateListItem({ id, templateName }: { id: string; templateName: stri
   );
 }
 
-function useGetTemplates() {
-  const [templates, setTemplates] = useState<Template[] | null>(null);
-  useEffect(() => {
-    if (!templates) {
-      const templates = fetchTemplates();
-      setTemplates(templates);
-    }
-  }, [templates]);
-
-  return templates ? templates : [];
-}
-
 export default TemplatesDashboard;
-
-function fetchTemplates(): Template[] {
-  const templateData = JSON.parse(localStorage.getItem(templateStorageKey) || "{}");
-  if (!templateData) return [];
-  const templateMap = z.record(z.string(), templateSchema).parse(templateData);
-  return Object.values(templateMap).map(template => {
-    return template;
-  });
-}

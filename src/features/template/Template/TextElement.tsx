@@ -15,7 +15,7 @@ interface ViewModeProps extends Props {
 
 interface EditModeProps extends Props {
   editMode: true;
-  selectedElement?: string;
+  selectedElement?: string | null;
 }
 
 function TextElement(props: PropsWithEditMode) {

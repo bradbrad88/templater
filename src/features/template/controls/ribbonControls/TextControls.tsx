@@ -1,11 +1,11 @@
 import { useId, useState } from "react";
+import { googleFonts } from "src/config/fonts";
 import { useImportData } from "features/importData/useImportData";
-import { useTemplateMain } from "features/template/useTemplateContext";
+import { useTemplate } from "features/template/useTemplateContext";
 import { TextElement } from "features/template/template";
 import SelectMenu from "common/SelectMenu";
 import Input from "common/Input";
 import Label from "common/Label";
-import { googleFonts } from "src/config/fonts";
 
 function TextControls({ element }: { element: TextElement }) {
   return (
@@ -22,7 +22,7 @@ function TextControls({ element }: { element: TextElement }) {
 
 function DataHeader({ element }: { element: TextElement }) {
   const { data } = useImportData();
-  const { changeElementDataHeader } = useTemplateMain();
+  const { updateElementDataHeader } = useTemplate();
   const [showInput, setShowInput] = useState(false);
 
   const [dataHeader, setDataHeader] = useState<string | null>(null);
@@ -39,7 +39,7 @@ function DataHeader({ element }: { element: TextElement }) {
     );
 
   const onSelectChange = (value: string) => {
-    changeElementDataHeader(element.id, value);
+    updateElementDataHeader(element.id, value);
   };
 
   const onInputChange: React.ChangeEventHandler<HTMLInputElement> = e => {
@@ -48,7 +48,7 @@ function DataHeader({ element }: { element: TextElement }) {
 
   const onInputBlur = () => {
     if (dataHeader == null) return;
-    changeElementDataHeader(element.id, dataHeader);
+    updateElementDataHeader(element.id, dataHeader);
     setDataHeader(null);
   };
   /*
@@ -96,15 +96,14 @@ function DataHeader({ element }: { element: TextElement }) {
 }
 
 function FontSize({ element }: { element: TextElement }) {
-  const { changeElementFontSize } = useTemplateMain();
+  const { updateElementFontSize } = useTemplate();
 
   const id = useId();
 
   const onFontSizeChange: React.ChangeEventHandler<HTMLInputElement> = e => {
     const fontSize = Number(e.target.value);
     if (isNaN(fontSize)) return;
-    const change = fontSize - element.fontSize;
-    changeElementFontSize(element.id, change);
+    updateElementFontSize(element.id, fontSize);
   };
 
   return (
@@ -124,13 +123,13 @@ function FontSize({ element }: { element: TextElement }) {
 }
 
 function FontSelection({ element }: { element: TextElement }) {
-  const { changeElementFontFamily } = useTemplateMain();
+  const { updateElementFontFamily } = useTemplate();
   const fonts = [...googleFonts];
   const id = useId();
   fonts.sort();
   const options = fonts.map(font => ({ id: font, value: font }));
   const onChange = (value: string) => {
-    changeElementFontFamily(element.id, value);
+    updateElementFontFamily(element.id, value);
   };
   return (
     <div className="w-48">
@@ -147,13 +146,13 @@ function FontSelection({ element }: { element: TextElement }) {
 }
 
 function ColourSelection({ element }: { element: TextElement }) {
-  const { changeElementFontColour } = useTemplateMain();
+  const { updateElementFontColour } = useTemplate();
   const [colour, setColour] = useState(element.color);
   const id = useId();
 
   const onBlur: React.ChangeEventHandler<HTMLInputElement> = () => {
     console.log(colour);
-    changeElementFontColour(element.id, colour);
+    updateElementFontColour(element.id, colour);
   };
 
   const onChange: React.ChangeEventHandler<HTMLInputElement> = e => {
