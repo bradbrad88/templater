@@ -21,6 +21,7 @@ type UseTemplate = {
   rearrangeElementOrder: (elementId: string, newIndex: number) => void;
   setElementWidth: (elementId: string, width: number) => void;
   moveElement: (...params: Parameters<OnMoveElement>) => void;
+  deleteElement: (elementId: string) => void;
 };
 
 export function useTemplateOperations(template: Template): UseTemplate {
@@ -111,6 +112,13 @@ export function useTemplateOperations(template: Template): UseTemplate {
     };
   };
 
+  const deleteElement = (elementId: string) => {
+    return {
+      ...template,
+      elements: template.elements.filter(el => el.id !== elementId),
+    };
+  };
+
   const withMutate =
     <Args extends unknown[]>(fn: (...args: Args) => Template) =>
     (...args: Args) => {
@@ -142,6 +150,7 @@ export function useTemplateOperations(template: Template): UseTemplate {
     rearrangeElementOrder: action(rearrangeElementOrder),
     setElementWidth: action(setElementWidth),
     moveElement: action(moveElement),
+    deleteElement: action(deleteElement),
   };
 
   function handleHistory(direction?: "back" | "forward"): Template {
