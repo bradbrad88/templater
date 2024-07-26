@@ -1,5 +1,6 @@
 import { queryOptions } from "@tanstack/react-query";
 import { TemplateFilters, getTemplateById, getTemplateList } from "./template";
+import NotFoundError from "src/errors/NotFoundError";
 
 export const templateKeys = {
   all: () => ["templates"] as const,
@@ -13,6 +14,10 @@ export const templateQuery = (id: string) =>
   queryOptions({
     queryKey: templateKeys.detail(id),
     queryFn: async () => await getTemplateById(id),
+    retry: (_, error) => {
+      if (error instanceof NotFoundError) return false;
+      return true;
+    },
   });
 
 export const templateListQuery = (filters: TemplateFilters) =>

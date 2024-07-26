@@ -10,6 +10,7 @@ import PreviewTemplate from "features/template/PreviewTemplate";
 import TemplateEditor from "features/template/TemplateEditor";
 import Fonts from "webfontloader";
 import { googleFonts } from "./config/fonts";
+import TemplateErrorBoundary from "features/template/TemplateErrorBoundary";
 
 Fonts.load({ google: { families: googleFonts } });
 
@@ -30,6 +31,7 @@ const router = createBrowserRouter([
           },
           {
             path: ":templateId",
+            errorElement: <TemplateErrorBoundary />,
             element: <ViewTemplate />,
             children: [
               { path: "", element: <TemplateEditor /> },

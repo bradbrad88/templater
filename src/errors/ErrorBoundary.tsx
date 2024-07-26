@@ -1,5 +1,6 @@
 import { ZodError } from "zod";
 import Button from "../common/Button";
+import NotFoundError from "./NotFoundError";
 
 type Props = {
   error: unknown;
@@ -23,8 +24,10 @@ const ErrorBoundary = ({ error, resetErrorBoundary }: Props) => {
         </div>
       );
     }
+    if (error instanceof NotFoundError) {
+      return <div>Content not found</div>;
+    }
     if (error instanceof Error) {
-      console.log("Hi");
       return (
         <div>
           <p>{error.message}</p>
