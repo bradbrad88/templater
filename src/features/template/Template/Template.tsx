@@ -128,7 +128,8 @@ function RenderElements(props: {
   editMode?: boolean;
   onSelectElement?: OnSelectElement;
 }) {
-  return props.template.elements.map(element => (
+  const elements = [...props.template.elements].reverse();
+  return elements.map(element => (
     <TemplateElement key={element.id} {...props} element={element} />
   ));
 }
