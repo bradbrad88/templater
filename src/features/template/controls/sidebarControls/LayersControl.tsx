@@ -8,6 +8,7 @@ import { TemplateElement } from "features/template/template";
 import { SortableItem } from "common/dnd/SortableItem";
 import DragOverlay from "common/dnd/DragOverlay";
 import { DragIcon } from "common/icons";
+import { exhaustiveSwitchGuard } from "utils/exhaustiveSwitchGuard";
 
 function LayersControl() {
   const { template, rearrangeElementOrder } = useTemplate();
@@ -73,13 +74,31 @@ function ElementControl({
       className="border-[1px] border-zinc-400 rounded-lg p-2 bg-zinc-100 shadow-black/10 shadow-md"
     >
       <div className="flex justify-between capitalize">
-        {element.type} - {"dataHeader" in element && element.dataHeader}
+        <div className="flex items-center">
+          <RenderElement element={element} />
+        </div>
         <Handle>
           <DragIcon size={20} />
         </Handle>
       </div>
     </div>
   );
+}
+
+function RenderElement({ element }: { element: TemplateElement }) {
+  const type = element.type;
+  switch (type) {
+    case "text":
+      return <span>{element.dataHeader}</span>;
+    case "image":
+      return (
+        <div className="w-7 overflow-hidden rounded-md -m-1">
+          <img className="" src={element.image.toString()} />
+        </div>
+      );
+    default:
+      exhaustiveSwitchGuard(type);
+  }
 }
 
 function EmptyHandle({ children }: { children?: React.ReactNode }) {
