@@ -38,7 +38,7 @@ function EditorControls() {
       ) : (
         <LoadSpreadsheet />
       )}
-      <div className="p-3 border-b-[1px] border-zinc-300 w-full">
+      <div className="pt-4 pb-1 border-b-[1px] border-zinc-300 w-full mb-4">
         <Tabs tabs={tabsCurrent} onChange={onTabChange} />
       </div>
       {activeControl === "size" && <PropertiesControl />}

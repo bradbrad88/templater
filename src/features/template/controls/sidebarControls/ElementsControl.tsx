@@ -31,8 +31,10 @@ function ElementsControl() {
       <Button onClick={onAddTextElement} variant={"outline"}>
         Add Text
       </Button>
-      <UploadImage />
-      <ListImages />
+      <div className="mt-4">
+        <UploadImage />
+        <ListImages />
+      </div>
     </div>
   );
 }
@@ -41,10 +43,13 @@ function ListImages() {
   const { data } = useSuspenseQuery(imageListQuery());
 
   return (
-    <div className="grid grid-cols-[repeat(auto-fill,_minmax(0,_100px))] gap-2">
-      {data.map(image => (
-        <ImageListItem key={image.id} image={image} />
-      ))}
+    <div className="mt-2">
+      {data.length > 0 && <h2>Click on an image to use it</h2>}
+      <div className="grid grid-cols-3 gap-2">
+        {data.map(image => (
+          <ImageListItem key={image.id} image={image} />
+        ))}
+      </div>
     </div>
   );
 }
@@ -63,8 +68,8 @@ function ImageListItem({ image }: { image: Image }) {
     addElement(imageElement);
   };
   return (
-    <div className="w-full h-full overflow-hidden border-zinc-400 border-[1px] shadow-md shadow-black/20 bg-white rounded-md">
-      <img className="block w-full h-full" src={image.src} onClick={onClick} />
+    <div className="w-full aspect-square overflow-hidden border-zinc-400 border-[1px] shadow-md shadow-black/20 bg-white rounded-md">
+      <img className="block w-full h-full object-cover" src={image.src} onClick={onClick} />
     </div>
   );
 }
@@ -88,7 +93,7 @@ function UploadImage() {
   return (
     <div className="w-full">
       <label
-        className="px-4 py-1 border-[1px] border-indigo-700 rounded-lg bg-indigo-600 text-white text-sm h-10 flex justify-center items-center w-full"
+        className="px-4 py-1 border-[1px] border-indigo-700 bg-white text-sm h-10 flex justify-center items-center w-full shadow-sm hover:bg-indigo-700/10 rounded-md"
         htmlFor={id}
       >
         Upload Image
