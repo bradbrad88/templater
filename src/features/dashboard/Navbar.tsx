@@ -36,15 +36,15 @@ function SpreadSheetLoader() {
   const { data, removeData } = useImportData();
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-4">
       {data && (
-        <div className="relative flex items-center h-full">
+        <div className="relative flex items-center h-full bg-white/10 rounded-full text-sm px-4  select-none">
           {data.sourceName}
           <span
             onClick={removeData}
-            className="absolute w-8 h-8 border-[1px] border-red-400 left-0 top-1/2 -translate-y-1/2 translate-x-[calc(-100%_-_10px)] flex items-center justify-center fill-red-400 hover:fill-red-600 rounded-full hover:border-red-600 cursor-pointer"
+            className="absolute w-5 h-5 border-[1px] border-red-400 -right-2 -top-2 flex items-center justify-center fill-red-400 hover:fill-red-600 rounded-full hover:border-red-600 cursor-pointer bg-black hover:bg-white transition-colors duration-200"
           >
-            <XIcon size={14} className="" />
+            <XIcon size={10} className="" />
           </span>
         </div>
       )}
