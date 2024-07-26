@@ -2,9 +2,8 @@ import { Meta, StoryObj } from "@storybook/react";
 
 import Template from "./Template";
 
-import type { Template as TemplateType } from "../template";
+import { type Template as TemplateType } from "../template";
 
-import img from "./assets/img.avif";
 import { useState } from "react";
 
 const meta: Meta<typeof Template> = {
@@ -20,7 +19,7 @@ type TemplateProps = Parameters<typeof Template>[0];
 function TemplateWrapper(args: Omit<TemplateProps, "onMoveElement" | "onSelectElement">) {
   const [template, setTemplate] = useState<TemplateType>(args.template);
   const [selectedElement, setSelectedElement] = useState<string | undefined>(
-    args.selectedElement
+    args.selectedElement as string | undefined
   );
 
   const onMoveElement = (elementId: string, delta: { top: number; left: number }) => {
@@ -57,7 +56,8 @@ function TemplateWrapper(args: Omit<TemplateProps, "onMoveElement" | "onSelectEl
 const template: TemplateType = {
   width: 60,
   height: 40,
-  changeLog: [],
+  future: [],
+  history: [],
   elements: [
     { id: "element-1", type: "text", fontSize: 22, dataHeader: "Title", top: 10, left: 10 },
     {
@@ -68,7 +68,6 @@ const template: TemplateType = {
       top: 50,
       left: 10,
     },
-    { id: "element-2", type: "image", src: img, width: 200, top: 80, left: 110 },
   ],
   id: "template-1",
   units: "mm",
