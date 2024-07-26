@@ -58,8 +58,6 @@ export const serialisedElementSchema = z.union([
 
 export const unitSchema = z.union([z.literal("mm"), z.literal("cm"), z.literal("in")]);
 
-export const actionTypeSchema = z.union([z.literal("setSize"), z.literal("setTemplateName")]);
-
 export const templateSchema = z.object({
   id: z.string(),
   templateName: z.string(),
@@ -89,7 +87,6 @@ export type TemplateFilters = {
 
 export type Template = z.infer<typeof templateWithHistorySchema>;
 export type SerialisedTemplate = z.infer<typeof serialisedTemplateWithHistorySchema>;
-export type ActionType = z.infer<typeof actionTypeSchema>;
 export type TemplateElement = z.infer<typeof elementSchema>;
 export type SerialisedTemplateElement = z.infer<typeof serialisedElementSchema>;
 export type TextElement = z.infer<typeof textElementSchema>;
