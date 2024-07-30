@@ -6,12 +6,15 @@ export const templateStorageKey = "templates";
 
 export class TemplateImage {
   public file: File;
+  #src: string;
+
   constructor(file: File) {
     this.file = file;
+    this.#src = URL.createObjectURL(this.file).toString();
   }
 
   toString() {
-    return URL.createObjectURL(this.file).toString();
+    return this.#src;
   }
 }
 
