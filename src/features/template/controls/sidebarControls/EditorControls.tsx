@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useImportData } from "features/importData/useImportData";
+import { useTemplateData } from "features/templateData/useTemplateData";
 import useToggleModal from "src/hooks/useToggleModal";
 import PropertiesControl from "./TemplatePropertiesControls";
 import ElementsControl from "./ElementsControl";
@@ -18,7 +18,7 @@ const tabs: Array<{ name: string; href: ActiveControl }> = [
 
 function EditorControls() {
   const [activeControl, setActiveControl] = useState<ActiveControl>("size");
-  const { data } = useImportData();
+  const { templateData } = useTemplateData();
 
   const tabsCurrent = tabs.map(tab => ({
     ...tab,
@@ -31,7 +31,7 @@ function EditorControls() {
 
   return (
     <div className="w-full p-4 mt-2">
-      {data ? (
+      {templateData ? (
         <Link to={"preview"}>
           <Button className="w-full font-bold">Preview</Button>
         </Link>

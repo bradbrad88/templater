@@ -1,17 +1,17 @@
 import { useId, useState } from "react";
 import { read, utils } from "xlsx";
-import { useImportData } from "./useImportData";
+import { useTemplateData } from "./useTemplateData";
 import SelectMenu from "common/SelectMenu";
 import Button from "common/Button";
 import Label from "common/Label";
 
 import type { WorkBook } from "xlsx";
-import type { BodyData, DataSource, Headers } from "./importData";
+import type { BodyData, TemplateData, Headers } from "./templateData";
 
 function LoadWorkbook({ close = () => {} }: { close?: () => void }) {
-  const [dataSource, setDataSource] = useState<DataSource | null>(null);
+  const [dataSource, setTemplateData] = useState<TemplateData | null>(null);
   const [workbook, setWorkbook] = useState<WorkBook | null>(null);
-  const { uploadData } = useImportData();
+  const { uploadData } = useTemplateData();
   const [page, setPage] = useState(0);
   const [sourceName, setSourceName] = useState<string>("");
 
@@ -23,7 +23,7 @@ function LoadWorkbook({ close = () => {} }: { close?: () => void }) {
 
   const onFileChange: React.ChangeEventHandler<HTMLInputElement> = async e => {
     const file = e.target.files?.[0];
-    if (!file) return setDataSource(null);
+    if (!file) return setTemplateData(null);
     const data = await file.arrayBuffer();
     const wb = read(data);
     setWorkbook(wb);

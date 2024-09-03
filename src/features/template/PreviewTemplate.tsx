@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { createPortal } from "react-dom";
 import { Navigate } from "react-router-dom";
-import { useImportData } from "features/importData/useImportData";
+import { useTemplateData } from "features/templateData/useTemplateData.ts";
 import { useTemplate } from "./useTemplateContext";
 import Template from "./Template/Template";
 import { ChevronLeftIcon, ChevronRightIcon } from "common/icons";
 
 function PreviewTemplate() {
-  const { data } = useImportData();
+  const { data } = useTemplateData();
   const { template } = useTemplate();
   const [row, setRow] = useState(0);
 

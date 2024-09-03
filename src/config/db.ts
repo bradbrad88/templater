@@ -5,8 +5,8 @@ export const Stores = {
   images: {
     keyPath: "id",
   },
-  importData: {
-    keyPath: "sourceName",
+  templateData: {
+    keyPath: "id",
   },
 } as const;
 
