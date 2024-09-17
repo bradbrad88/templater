@@ -1,8 +1,10 @@
 import React from "react";
 import { cn } from "../utils/cn";
 
+export type Tab = { name: string; href: string; current: boolean };
+
 type Props = {
-  tabs: { name: string; href: string; current: boolean }[];
+  tabs: Tab[];
   onChange: (href: string) => void;
 };
 
