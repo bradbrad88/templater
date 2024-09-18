@@ -6,11 +6,13 @@ import RootErrorElement from "./errors/RootErrorElement";
 import TemplatesPage from "./features/template/TemplatesPage";
 import TemplatesDashboard from "./features/template/TemplatesDashboard";
 import ViewTemplate from "features/template/ViewTemplate";
-import PreviewTemplate from "features/template/PreviewTemplate";
+import TemplateErrorBoundary from "features/template/TemplateErrorBoundary";
 import TemplateEditor from "features/template/TemplateEditor";
+import PreviewTemplate from "features/template/PreviewTemplate";
+import LoadWorkbook from "features/templateData/LoadWorkbook";
+
 import Fonts from "webfontloader";
 import { googleFonts } from "./config/fonts";
-import TemplateErrorBoundary from "features/template/TemplateErrorBoundary";
 
 Fonts.load({ google: { families: googleFonts } });
 
@@ -30,15 +32,28 @@ const router = createBrowserRouter([
             element: <TemplatesDashboard />,
           },
           {
-            path: ":templateId",
+            path: ":templateId/*",
             errorElement: <TemplateErrorBoundary />,
             element: <ViewTemplate />,
             children: [
-              { path: "", element: <TemplateEditor /> },
-              { path: "preview", element: <PreviewTemplate /> },
+              {
+                path: "edit",
+                element: <TemplateEditor />,
+              },
+              {
+                path: "data",
+                element: <LoadWorkbook />,
+              },
+              {
+                path: "preview",
+                element: <PreviewTemplate />,
+              },
+              {
+                path: "*",
+                element: <Navigate to={"edit"} />,
+              },
             ],
           },
-          {},
         ],
       },
     ],
