@@ -1,4 +1,5 @@
 import { useId, useState } from "react";
+import { useParams } from "react-router";
 import { read, utils } from "xlsx";
 import { useTemplateData } from "./useTemplateData";
 import SelectMenu from "common/SelectMenu";
@@ -9,6 +10,7 @@ import type { WorkBook } from "xlsx";
 import type { BodyData, TemplateData, Headers } from "./templateData";
 
 function LoadWorkbook({ close = () => {} }: { close?: () => void }) {
+  const { templateId } = useParams();
   const [dataSource, setTemplateData] = useState<TemplateData | null>(null);
   const [workbook, setWorkbook] = useState<WorkBook | null>(null);
   const { uploadData } = useTemplateData();
@@ -17,7 +19,7 @@ function LoadWorkbook({ close = () => {} }: { close?: () => void }) {
 
   const onImport = () => {
     const data = parseSpreadsheet(workbook!, page);
-    uploadData({ ...data, sourceName });
+    uploadData({ ...data, sourceName, id: templateId! });
     close();
   };
 
@@ -99,7 +101,7 @@ function SheetSelector({
   );
 }
 
-function DisplayPage({ data }: { data: DataSource }) {
+function DisplayPage({ data }: { data: Omit<TemplateData, "id"> }) {
   const body = data.bodyData.slice(0, 20);
   const headers = data.headers;
   const columnCount = headers.length;
@@ -146,7 +148,7 @@ function DisplayPage({ data }: { data: DataSource }) {
   );
 }
 
-function parseSpreadsheet(workbook: WorkBook, page: number): DataSource {
+function parseSpreadsheet(workbook: WorkBook, page: number): Omit<TemplateData, "id"> {
   const firstSheet = workbook.Sheets[workbook.SheetNames[page]];
   const json = utils.sheet_to_json(firstSheet, { header: 1, blankrows: false });
   const headers: Headers[] = parseHeaders(json[0] as string[]);
